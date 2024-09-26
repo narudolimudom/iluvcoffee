@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
+import { CreateCoffeeDto } from './dto/create-coffee.dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto/update-coffee.dto';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -20,24 +22,28 @@ export class CoffeesController {
     // specific return status
     // @HttpCode(HttpStatus.GONE)
     public findOne(
-        @Param('id') id: string
+        @Param('id') id: number
     ) {
-        return this.coffeesService.findOne(id)
+        console.log(typeof id)
+        return this.coffeesService.findOne(""+id)
     }
 
     @Post()
     public create(
         // 'name' for specific return key
-        @Body('name') body
+        // @Body('name') body
+        @Body() createCoffeeDto: CreateCoffeeDto
     ) {
-        return this.coffeesService.create(body);
+        console.log(createCoffeeDto instanceof CreateCoffeeDto)
+        return this.coffeesService.create(createCoffeeDto);
     }
 
     @Patch(':id')
     public update(
-        @Param('id') id: string, @Body() body
+        @Param('id') id: string,
+        @Body() updateCoffeeDto: UpdateCoffeeDto
     ) {
-        return this.coffeesService.update(id, body);
+        return this.coffeesService.update(id, updateCoffeeDto);
     }
 
     @Delete(':id')
